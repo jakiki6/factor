@@ -1,4 +1,5 @@
-import json, math, zlib, sys
+import json
+import sys
 from tqdm import tqdm
 
 sys.set_int_max_str_digits(0)
@@ -16,14 +17,14 @@ with open("data/relations.json", "r") as f:
 vecs = []
 
 for relation in tqdm(relations):
-    a, b = relation, relation ** 2 % n
+    a, b = relation, relation**2 % n
 
     c = b
     vec = {}
 
     for p in primes:
         while c % p == 0:
-            if not p in vec:
+            if p not in vec:
                 vec[p] = False
 
             c //= p

@@ -1,4 +1,5 @@
-import json, math
+import json
+import math
 from tqdm import tqdm
 
 with open("data/settings.json", "r") as f:
@@ -18,7 +19,7 @@ print(f"I need {needed} relations")
 a = math.isqrt(n) + 1
 for _ in tqdm(range(0, needed)):
     relation = None
-    while relation == None:
+    while relation is None:
         b = pow(a, 2, n)
         if a == b or b == 0:
             continue
@@ -37,7 +38,7 @@ for _ in tqdm(range(0, needed)):
             if c == 1:
                 break
 
-        if c == 1 and not a in relations and len(vec):
+        if c == 1 and a not in relations and len(vec):
             relation = a
 
         a += 1

@@ -1,7 +1,8 @@
+import json
+import os
+
 n = int(input("n: "))
 smoothness = int(input("s: "))
-
-import json, math, os
 
 if not os.path.isdir("data"):
     os.mkdir("data")

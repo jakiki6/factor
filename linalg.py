@@ -1,5 +1,5 @@
-import json, math, zlib
-from tqdm import tqdm
+import json
+import math
 
 with open("data/settings.json", "r") as f:
     settings = json.load(f)
@@ -13,6 +13,7 @@ with open("data/relations.json", "r") as f:
 
 with open("data/matrix.json", "rb") as f:
     matrix = json.load(f)
+
 
 def generate_candidates():
     B = max(matrix).bit_length()
@@ -34,6 +35,7 @@ def generate_candidates():
                 break
         else:
             yield idx_set
+
 
 for indexes in generate_candidates():
     a = 1
