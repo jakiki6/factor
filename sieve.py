@@ -1,5 +1,6 @@
 import json
 import math
+import os
 from tqdm import tqdm
 
 with open("data/settings.json", "r") as f:
@@ -10,40 +11,53 @@ with open("data/settings.json", "r") as f:
 with open("data/primes.json", "r") as f:
     primes = json.load(f)
 
+relations = []
+if os.path.isfile("data/relations.json"):
+    with open("data/relations.json", "r") as f:
+        relations = json.load(f)
+
 print(f"Factoring {n}")
 
-relations = []
 needed = int(s / math.log(s))
-print(f"I need {needed} relations")
+print(f"I need {needed} relations, have {len(relations)}")
 
 a = math.isqrt(n) + 1
-for _ in tqdm(range(0, needed)):
-    relation = None
-    while relation is None:
-        b = pow(a, 2, n)
-        if a == b or b == 0:
+
+have = len(relations)
+if have:
+    a = relations[-1] + 1
+
+try:
+    for i in tqdm(range(0, needed)):
+        if i < have:
             continue
 
-        c = b
-        vec = []
-        for p in primes:
-            while c % p == 0:
-                if p in vec:
-                    vec.remove(p)
-                else:
-                    vec.append(p)
+        relation = None
+        while relation is None:
+            b = pow(a, 2, n)
+            if a == b or b == 0:
+                continue
 
-                c //= p
+            c = b
+            vec = []
+            for p in primes:
+                while c % p == 0:
+                    if p in vec:
+                        vec.remove(p)
+                    else:
+                        vec.append(p)
 
-            if c == 1:
-                break
+                    c //= p
 
-        if c == 1 and a not in relations and len(vec):
-            relation = a
+                if c == 1:
+                    break
 
-        a += 1
+            if c == 1 and a not in relations and len(vec):
+                relation = a
 
-    relations.append(relation)
+            a += 1
 
-with open("data/relations.json", "w") as f:
-    json.dump(relations, f)
+        relations.append(relation)
+finally:
+    with open("data/relations.json", "w") as f:
+        json.dump(relations, f)
