@@ -44,15 +44,21 @@ for relation in tqdm(relations):
 
 print(f"Matrix size: {len(vecs)}x{len(primes)}")
 
+h = 0
 matrix = []
 for vec in vecs:
     line = 0
 
     for p in vec:
-        i = primes.index(p)
-        line |= 1 << i
+        i = 1 << primes.index(p)
+        if line & i == 0:
+            h += 1
+
+        line |= i
 
     matrix.append(line)
+
+print(f"Average Hamming weight of row: {h * 100// len(matrix) / 100}")
 
 with open("data/matrix.json", "w") as f:
     json.dump(matrix, f)
